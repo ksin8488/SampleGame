@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SampleGame.View;
 
 namespace SampleGame.Model	//Because the code is in the model folder
 {
@@ -11,37 +12,40 @@ namespace SampleGame.Model	//Because the code is in the model folder
 			
 		}
 
-		public void Initialize(Texture2D texture, Vector2 position)
+		// Initialize the player
+		public void Initialize(Animation animation, Vector2 position)
 		{
-			PlayerTexture = texture;
+			playerAnimation = animation;
 
-			//Set the starting position of the player around the middle of the screen and to the back
+			// Set the starting position of the player around the middle of the screen and to the back
 			Position = position;
 
-		    // Set the player to be active 
-		    Active = true;
+			// Set the player to be active
+			Active = true;
 
-		    // Set the player health
-		    Health = 100;
+			// Set the player health
+			Health = 100;
 		}
 
-		public void Update()
+		// Update the player animation
+		public void Update(GameTime gameTime)
 		{
-
+			playerAnimation.Position = Position;
+			playerAnimation.Update(gameTime);
 		}
 
-		public void Draw(SpriteBatch spriteBatch) //Make sure you ALWAYS place anything you are drawing between the Begin and End method callls, and the order matters!
+		// Draw the player
+		public void Draw(SpriteBatch spriteBatch)
 		{
-			spriteBatch.Draw(PlayerTexture, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-		
+			playerAnimation.Draw(spriteBatch);
 		}
 
-		//Animation representing the player
-		private Texture2D playerTexture;
-		public Texture2D PlayerTexture
+		// Animation representing the player
+		private Animation playerAnimation;
+		public Animation PlayerAnimation
 		{
-			get { return playerTexture; }
-			set { playerTexture = value; }
+			get { return playerAnimation; }
+			set { playerAnimation = value; }
 		}
 
 		//Position of the Player relative to the upper left side of the screen
@@ -65,16 +69,17 @@ namespace SampleGame.Model	//Because the code is in the model folder
 			set { health = value; }
 		}
 
-		// Get the width of the player ship
+		/// Get the width of the player ship
 		public int Width
 		{
-			get { return PlayerTexture.Width; }
+		get { return playerAnimation.FrameWidth; }
 		}
 
 		// Get the height of the player ship
 		public int Height
 		{
-			get { return PlayerTexture.Height; }
+			get { return playerAnimation.FrameHeight; }
 		}
+
 	}
 }
