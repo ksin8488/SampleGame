@@ -40,8 +40,8 @@ namespace SampleGame.Model	//Because the code is in the model folder
 		private Texture2D playerTexture;
 		public Texture2D PlayerTexture
 		{
-			get { return PlayerTexture; }
-			set { PlayerTexture = value; }
+			get { return playerTexture; }
+			set { playerTexture = value; }
 		}
 
 		//Position of the Player relative to the upper left side of the screen
