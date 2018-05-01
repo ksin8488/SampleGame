@@ -72,6 +72,11 @@ namespace SampleGame.Controller
 		// The music played during gameplay
 		private Song gameplayMusic;
 
+		//Number that holds the player score
+		private int score;
+		// The font used to display UI elements
+		private SpriteFont font;		//NOT BEING USED!!!
+
 		public SpaceGame()
 		{
 			graphics = new GraphicsDeviceManager(this);
@@ -110,6 +115,9 @@ namespace SampleGame.Controller
 			player = new Player();
 			// Set a constant player move speed
 			playerMoveSpeed = 8.0f;
+
+			//Set player's score to zero
+			score = 0;
 
 			base.Initialize();
 		}
@@ -237,6 +245,12 @@ namespace SampleGame.Controller
 			    explosions[i].Draw(spriteBatch);
 			}
 
+			// Draw the score - NOT IN USE
+			//spriteBatch.DrawString(font, "score: " + score, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X, GraphicsDevice.Viewport.TitleSafeArea.Y), Color.White);
+
+			// Draw the player health - NOT IN USE
+			//spriteBatch.DrawString(font, "health: " + player.Health, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X, GraphicsDevice.Viewport.TitleSafeArea.Y + 30), Color.White);
+
 			// Stop drawing 
 			spriteBatch.End();
 
@@ -284,6 +298,14 @@ namespace SampleGame.Controller
 				// Play the laser sound
 				laserSound.Play();
 			}
+
+			// reset score if player health goes to zero
+			if (player.Health <= 0)
+			{
+			    player.Health = 100;
+			    score = 0;
+			}
+
 		}
 
 		private void AddEnemy()
@@ -328,13 +350,18 @@ namespace SampleGame.Controller
 				{
 					// Add an explosion
 					AddExplosion(enemies[i].Position);
+
 					// Play the explosion sound
 					explosionSound.Play();
+
+					//Add to the player's score
+					score += enemies[i].ScoreValue;
 				}
 
 				if (enemies[i].Active == false)
 				{
 					enemies.RemoveAt(i);
+
 				}
 		 	}
 		}
