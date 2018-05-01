@@ -1,11 +1,10 @@
 ﻿using System;
 // ParallaxingBackground.cs
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SampleGame
+namespace SampleGame.View
 {
 	public class ParallaxingBackground
 	{
