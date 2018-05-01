@@ -32,9 +32,18 @@ namespace SampleGame.Controller
 		// A movement speed for the player
 		private float playerMoveSpeed;
 
+		// Image used to display the static background
+		private Texture2D mainBackground;
+
+		// Parallaxing Layers
+		private ParallaxingBackground bgLayer1;
+		private ParallaxingBackground bgLayer2;
+
 		public SpaceGame()
 		{
 			graphics = new GraphicsDeviceManager(this);
+			bgLayer1 = new ParallaxingBackground();
+			bgLayer2 = new ParallaxingBackground();
 			Content.RootDirectory = "Content";
 		}
 
@@ -69,6 +78,12 @@ namespace SampleGame.Controller
 
 			Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
 			player.Initialize(playerAnimation, playerPosition); 
+
+			// Load the parallaxing background
+			bgLayer1.Initialize(Content, "Texture/bgLayer1", GraphicsDevice.Viewport.Width, -1);
+			bgLayer2.Initialize(Content, "Texture/bgLayer2", GraphicsDevice.Viewport.Width, -2);
+
+			mainBackground = Content.Load<Texture2D>("Texture/mainbackground");
 		}
 
 		/// <summary>
@@ -98,6 +113,10 @@ namespace SampleGame.Controller
 			UpdatePlayer(gameTime);
 			player.Update(gameTime);
 
+			// Update the parallaxing background
+			bgLayer1.Update();
+			bgLayer2.Update();
+
 			base.Update(gameTime);
 		}
 
@@ -111,6 +130,12 @@ namespace SampleGame.Controller
 
 			// Start drawing 		//Make sure you ALWAYS place anything you are drawing between the Begin and End method callls, and the order matters!
 			spriteBatch.Begin(); 
+			spriteBatch.Draw(mainBackground, Vector2.Zero, Color.White);
+
+			// Draw the moving background
+			bgLayer1.Draw(spriteBatch);
+			bgLayer2.Draw(spriteBatch);
+
 			// Draw the Player 
 			player.Draw(spriteBatch); 
 			// Stop drawing 
